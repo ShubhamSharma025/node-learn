@@ -1,14 +1,30 @@
 const express = require("express");
 
-const app = express();
-//request handler
-app.use("/test",(req,res) => {
-    res.send("hello from this server")
-})
+require("./config/database");
 
-app.use("/hello",(req,res) => {
-    res.send("hello from  server")
-})
+const app = express();
+
+const User = require("./models/user");
+//request handler
+app.post("/test", async(req,res) => {
+     
+    const user = new User({
+        firstName :"shubham",
+        lastName :"Sharma",
+        emailId:"shubhamsh0532@gmail.com",
+        password:"shubham@123"
+    });
+
+    await user.save();
+
+    try {
+        await user.save();
+        res.send("user added successfully");
+    }catch(err){
+        res.status(400).send("error");
+    }
+});
+
 
 
 app.listen(3000,()=>{
